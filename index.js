@@ -121,10 +121,9 @@ app.post("/orders",verifyToken, async (req, res) => {
         }], { session });
 
         const fulfillmentResponse = await axios.get(
-            "https://jsonplaceholder.typicode.com/posts",
-            { orderId: order[0]._id, amount }
+            "https://jsonplaceholder.typicode.com/posts"
         );
-
+        console.log(fulfillmentResponse);
         const fulfillmentId = fulfillmentResponse.data.fulfillmentId;
 
         order[0].fulfillmentId = fulfillmentId;
@@ -139,7 +138,7 @@ app.post("/orders",verifyToken, async (req, res) => {
     } catch (error) {
         await session.abortTransaction();
         session.endSession();
-
+        console.log(error)
         return res.status(500).json({ message: "Order processing failed" });
     }
 });
